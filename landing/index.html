@@ -144,10 +144,11 @@ nav a.lp{color:var(--grn);background:var(--grn2)}nav a.lp.on{background:var(--gr
 .cta-band h2{margin:0 0 10px;font-size:38px;line-height:1;font-weight:900;text-transform:uppercase;color:#fff}.cta-band p{margin:0;font-size:16px;color:rgba(255,255,255,.75);max-width:560px}
 .cta-band .acts{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
 .lp-foot{padding:22px 40px 16px;font-size:12.5px;color:var(--mut);display:flex;gap:18px;flex-wrap:wrap;align-items:center}.lp-foot .ss-word{height:16px;width:auto;color:var(--red)}
-/* Schwebender Anmelde-Knopf: von Anfang an sichtbar, bleibt beim Scrollen unten stehen. Der Abstand unten an der Seite hält den Fuss frei. */
-#pg-landing{padding-bottom:84px}
-#pg-landing .lp-float{position:fixed;z-index:60;right:max(24px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));box-shadow:0 8px 24px rgba(0,0,0,.28);justify-content:center}
-@media (max-width:760px){#pg-landing{padding-bottom:92px}#pg-landing .lp-float{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));padding:15px 22px}}
+/* Schwebender Anmelde-Knopf: von Anfang an sichtbar, bleibt beim Scrollen unten rechts stehen. Ist das Abschlussband mit demselben Knopf im Bild, blendet er aus (Skript unten). */
+#pg-landing .lp-float{position:fixed;z-index:60;right:max(24px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));box-shadow:0 8px 24px rgba(0,0,0,.28);transition:opacity .2s,transform .2s}
+#pg-landing .lp-float.off{opacity:0;transform:translateY(10px);pointer-events:none}
+@media (max-width:760px){#pg-landing .lp-float{right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));font-size:13px;padding:11px 16px}
+.hero-brand{gap:10px}.hero-brand .ss-word{height:24px}.hero-brand b{font-size:16px;letter-spacing:.1em;padding-left:10px;white-space:nowrap}}
 @media print{#pg-landing .lp-float{display:none}}
 @media (max-width:980px){.hero,.lpf,.steps,.priv,.cta-band,.tut{grid-template-columns:1fr}.lpf{gap:56px}.steps{gap:48px}.lpf .f+.f,.steps>div+div{border-top:1px solid var(--line);padding-top:40px}.tut img{min-height:0;aspect-ratio:16/9}.hero h1{font-size:40px}.tools{grid-template-columns:1fr}.tools>div{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:18px}.tools>div:first-child{border-top:0;padding-top:4px}.cta-band .acts{justify-content:flex-start}}
 @media (max-width:760px){.hero{padding:30px 20px 36px}.hero h1{font-size:33px}.lsec,.cta-band,.lp-note,.lp-foot{padding-left:20px;padding-right:20px}.lsec h2{font-size:27px}.cta-band h2{font-size:30px}.priv b{font-size:38px}}
@@ -233,6 +234,6 @@ var im=lb.querySelector('img');function close(){lb.classList.remove('on');im.src
 document.addEventListener('click',function(e){var t=e.target.closest('.shot img,.lpf img,.steps img,.tut img');if(t){im.src=t.src;im.alt=t.alt;lb.classList.add('on');return}if(e.target.closest('#lb'))close()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});})();
 (function(){var pg=document.getElementById('pg-landing'),K='konzept:lplang';function set(l){pg.classList.toggle('fr',l==='fr');pg.querySelectorAll('.lp-lang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===l)});try{localStorage.setItem(K,l)}catch(e){}}
-pg.addEventListener('click',function(e){var b=e.target.closest('.lp-lang button');if(b)set(b.dataset.lang)});var l='de';try{l=localStorage.getItem(K)||'de'}catch(e){}set(l);})();
+pg.addEventListener('click',function(e){var b=e.target.closest('.lp-lang button');if(b)set(b.dataset.lang)});var l='de';try{l=localStorage.getItem(K)||'de'}catch(e){}set(l);var fl=pg.querySelector('.lp-float'),cb=pg.querySelector('.cta-band');if(fl&&cb&&window.IntersectionObserver)new IntersectionObserver(function(e){fl.classList.toggle('off',e[0].isIntersecting)}).observe(cb);})();
 </script>
 </body></html>
